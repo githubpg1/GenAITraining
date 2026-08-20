@@ -1,0 +1,3 @@
+URGENT!!! QA reported that the checkout REQUIREMENT is unclear at https://jira.company.com/REQ-101 and emailed qa-team@company.com. The user story needs acceptance criteria, test cases, and traceability before production deployment.
+The regression test failed for BUG-1234 at https://jira.company.com/BUG-1234. QA found duplicate orders, updated the defect priority, and requested a fix plus retesting from dev-team@company.com. Extra     spaces and mixed CASE make this report messy!!!
+Release readiness is blocked because test coverage is low, approvals are pending, and the deployment plan is incomplete. Contact release.manager@company.com or review https://jira.company.com/REL-55 before the production release. Security testing and regression testing are still required!!!

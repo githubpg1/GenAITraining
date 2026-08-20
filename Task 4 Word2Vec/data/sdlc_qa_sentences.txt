@@ -1,0 +1,25 @@
+The requirement defines the user story and acceptance criteria for the feature.
+Clear requirements help QA prepare accurate acceptance criteria and test cases.
+Each user story must have acceptance criteria before development begins.
+QA maps every requirement to acceptance criteria and detailed test cases.
+Test cases verify that the implemented feature satisfies each requirement.
+Test execution validates the test cases against the completed user story.
+Functional testing checks whether the requirement works as expected.
+QA testing identifies defects when actual results differ from expected results.
+A defect is logged with an issue description, evidence, and severity.
+Defect triage prioritizes critical issues before the release decision.
+Developers fix the defect and QA performs retesting after the code change.
+Retesting confirms that the defect fix works in the affected scenario.
+Regression testing checks that a defect fix does not break existing features.
+Test automation supports repeatable regression testing for stable user stories.
+Automated testing improves test coverage and shortens test execution time.
+Test coverage shows which requirements and acceptance criteria have been tested.
+Traceability links requirements, user stories, acceptance criteria, and test cases.
+Integration testing verifies that services exchange data correctly across components.
+Performance testing measures response time, throughput, and system stability.
+Security testing checks authentication, authorization, and protection of sensitive data.
+QA reviews open defects, test coverage, and traceability for release readiness.
+Release readiness requires completed testing, acceptable defects, and business approval.
+The deployment plan moves the approved build from testing to production release.
+Production release occurs after QA approval, defect review, and deployment readiness.
+A successful production release depends on requirements, testing, fixes, and approval.
