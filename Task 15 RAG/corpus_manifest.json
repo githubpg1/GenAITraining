@@ -1,0 +1,45 @@
+{
+  "collection": "hr_policy_documents",
+  "documents": [
+    {
+      "source_file": "employee_time_off_policy_2026.pdf",
+      "document_id": "employee-time-off-policy-2026",
+      "document_name": "Employee Time Off Policy",
+      "version": "3.0",
+      "effective_date": "2026-01-01",
+      "required_facts": ["20 paid vacation days", "5 unused vacation days", "10 business days"]
+    },
+    {
+      "source_file": "employee_time_off_policy_2025.pdf",
+      "document_id": "employee-time-off-policy-2025",
+      "document_name": "Employee Time Off Policy",
+      "version": "2.0",
+      "effective_date": "2025-01-01",
+      "required_facts": ["18 paid vacation days", "5 unused vacation days", "10 business days"]
+    },
+    {
+      "source_file": "business_travel_expense_policy_2026.pdf",
+      "document_id": "business-travel-expense-policy-2026",
+      "document_name": "Business Travel Expense Policy",
+      "version": "1.0",
+      "effective_date": "2026-01-01",
+      "required_facts": ["200 USD per night", "75 USD per travel day", "30 calendar days", "25 USD or more"]
+    },
+    {
+      "source_file": "parental_leave_policy_2026.pdf",
+      "document_id": "parental-leave-policy-2026",
+      "document_name": "Parental Leave Policy",
+      "version": "2.1",
+      "effective_date": "2026-01-01",
+      "required_facts": ["12 months of continuous service", "16 weeks", "30 days"]
+    },
+    {
+      "source_file": "employee_benefits_policy_2026.pdf",
+      "document_id": "employee-benefits-policy-2026",
+      "document_name": "Employee Benefits Policy",
+      "version": "4.0",
+      "effective_date": "2026-01-01",
+      "required_facts": ["annual enrollment period", "qualifying life event", "30 days"]
+    }
+  ]
+}

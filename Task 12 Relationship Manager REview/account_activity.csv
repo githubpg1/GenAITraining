@@ -1,0 +1,7 @@
+date,event,amount,balance
+2026-07-02,Salary credit,250000,650000
+2026-07-05,Rent payment,-45000,605000
+2026-07-12,Investment contribution,-50000,555000
+2026-07-18,Debit,-180000,375000
+2026-07-25,Account fee,-750,374250
+2026-07-31,Interest credit,750,375000
