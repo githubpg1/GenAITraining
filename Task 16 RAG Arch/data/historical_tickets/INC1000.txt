@@ -1,0 +1,14 @@
+Ticket ID: INC1000
+
+Issue:
+Unexpected shutdown during data export.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Corrected the URL rewrite rule in IIS.
+
+Status:
+Open

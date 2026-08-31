@@ -1,0 +1,14 @@
+Ticket ID: INC1078
+
+Issue:
+Application crashes when opening a specific file.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Updated SMTP credentials in the email client.
+
+Status:
+Resolved

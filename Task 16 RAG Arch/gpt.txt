@@ -1,0 +1,1584 @@
+The corrected interpretation is:
+
+* **GPT-5.6 Luna is required** as part of the solution.
+* **Semantic retrieval still depends on an embedding model + ChromaDB**; GPT-5.6 Luna should not be incorrectly described as the vector database or embedding engine.
+* **Paraphrase testing is mandatory**, not optional.
+* The acceptance criterion is explicitly **Top-3 retrieval of the correct historical ticket for a semantically equivalent query with little/no keyword overlap**.
+
+Here is the updated requirement analysis.
+
+---
+
+# Problem 16 — Semantic Search Over Client Support Tickets
+
+## Updated Requirement & Scope Analysis
+
+---
+
+# 1. Business Problem
+
+The company has approximately **200 historical client support tickets** stored as plain-text files.
+
+Each ticket contains information about:
+
+* customer's issue
+* conversation/history
+* eventual resolution
+* resolution status
+
+Currently, support agents manually search historical tickets or rely on memory.
+
+Traditional keyword search is inadequate because customers can describe the **same underlying problem using completely different language**.
+
+### Example
+
+Historical ticket:
+
+> "Session expires randomly every few minutes."
+
+New ticket:
+
+> "App keeps logging me out."
+
+There may be little or no keyword overlap, but the two issues have essentially the same meaning.
+
+### Business objective
+
+Build a semantic search capability that allows a support agent to enter a new issue and retrieve the **3–4 most semantically similar historical ticket chunks**, ranked by relevance, together with similarity scores and ticket metadata.
+
+---
+
+# 2. Updated Scope
+
+## In Scope
+
+### Data ingestion
+
+* Read approximately 200 `.txt` historical tickets.
+* Parse ticket content.
+* Extract available metadata.
+* Handle long ticket conversations.
+
+### Semantic processing
+
+* Chunk long ticket threads appropriately.
+* Generate embeddings for ticket chunks.
+* Store embeddings in ChromaDB.
+* Store ticket metadata alongside vectors.
+
+### New-ticket search
+
+* Accept a new support issue as natural language.
+* Use **GPT-5.6 Luna** as part of the query-understanding/search workflow.
+* Generate a query embedding using the selected embedding model.
+* Search ChromaDB using vector similarity.
+* Return the top 3–4 relevant results.
+
+### Results
+
+Each result should contain at minimum:
+
+* Ticket ID
+* Matching chunk
+* Similarity/distance score
+* Resolution status
+
+Potential additional metadata:
+
+* Source filename
+* Chunk ID
+* Chunk index
+
+### Testing
+
+The system must explicitly test **semantic paraphrases**, including queries with little or no shared keywords with the original ticket.
+
+The primary acceptance test is:
+
+> A paraphrased query must retrieve the correct historical ticket in the **Top 3 results**.
+
+---
+
+# 3. Out of Scope for MVP
+
+The following should not be included unless later required:
+
+* Automatic ticket resolution
+* Automatic ticket updates
+* Autonomous customer response
+* Multi-agent architecture
+* Fine-tuning a model
+* Real-time ticket ingestion
+* Production-scale distributed vector database
+* Complex authentication/authorization
+* Fully autonomous support agent
+* Automatic decision to close a ticket
+
+The MVP is fundamentally:
+
+> **Semantic retrieval + GPT-assisted query understanding + evaluation**
+
+---
+
+# 4. Correct AI Architecture
+
+There are three distinct responsibilities.
+
+```text id="k2e7b1"
+                  ┌──────────────────────┐
+                  │ Historical Tickets   │
+                  │      ~200 .txt       │
+                  └──────────┬───────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │ Parse / Chunk   │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │ Embedding Model │
+                    └────────┬────────┘
+                             │
+                             ▼
+                    ┌─────────────────┐
+                    │    ChromaDB     │
+                    │ Vector Store    │
+                    └────────┬────────┘
+                             ▲
+                             │
+                             │
+              ┌──────────────┴──────────────┐
+              │                             │
+              │       NEW SUPPORT TICKET    │
+              │                             │
+              │              ▼              │
+              │       GPT-5.6 Luna          │
+              │       Query Understanding   │
+              │              │              │
+              │              ▼              │
+              │      Search Representation  │
+              │              │              │
+              │              ▼              │
+              │       Embedding Model       │
+              │              │              │
+              └──────────────┼──────────────┘
+                             ▼
+                         ChromaDB
+                             │
+                             ▼
+                        Top 3–4
+                             │
+                             ▼
+                    Ranked Search Results
+```
+
+---
+
+# 5. Role of GPT-5.6 Luna
+
+This is the correction to the earlier analysis.
+
+**GPT-5.6 Luna is a required component of our implementation.**
+
+However, we should clearly define what it does.
+
+GPT-5.6 Luna should be responsible for **understanding/normalizing the incoming support issue**, rather than replacing the vector search mechanism.
+
+For example:
+
+### Raw ticket
+
+```text
+My application keeps throwing me back to the login
+screen every few minutes and I have to enter my
+credentials again.
+```
+
+### GPT-5.6 Luna understanding
+
+Conceptually:
+
+```text
+Repeated application logout /
+session termination /
+authentication persistence issue
+```
+
+This search representation is then passed to the embedding model.
+
+---
+
+# 6. Important distinction: GPT vs Embedding Model
+
+This needs to be explicitly documented because it is an easy architecture mistake.
+
+| Component             | Responsibility                  |
+| --------------------- | ------------------------------- |
+| **GPT-5.6 Luna**      | Understand/normalize new ticket |
+| **Embedding model**   | Convert text into vectors       |
+| **ChromaDB**          | Store and retrieve vectors      |
+| **Search service**    | Rank and return results         |
+| **Evaluation module** | Validate Top-3 retrieval        |
+
+Therefore the pipeline is:
+
+```text id="0k7k2d"
+New Ticket
+    ↓
+GPT-5.6 Luna
+    ↓
+Normalized Search Text
+    ↓
+Embedding Model
+    ↓
+Query Vector
+    ↓
+ChromaDB
+    ↓
+Top-K Results
+```
+
+---
+
+# 7. API Key Management
+
+Since GPT-5.6 Luna will be accessed through an API, the API key should be stored in the project's `.env`.
+
+Conceptually:
+
+```text id="d14kwk"
+.env
+   │
+   └── API credential
+          │
+          ▼
+    Application config
+          │
+          ▼
+    GPT-5.6 Luna client
+```
+
+### Security requirements
+
+The API key must **not** be:
+
+* hardcoded in Python
+* committed to Git
+* included in README
+* printed in logs
+* included in exception output
+
+`.env` should be included in `.gitignore`.
+
+---
+
+# 8. Historical Ticket Processing
+
+The historical tickets need to be processed before search.
+
+Pipeline:
+
+```text id="y2h8ot"
+.txt files
+   ↓
+Load
+   ↓
+Parse
+   ↓
+Extract metadata
+   ↓
+Chunk
+   ↓
+Embedding
+   ↓
+ChromaDB
+```
+
+---
+
+# 9. Ticket Parsing
+
+Before implementation, we need to inspect the actual files.
+
+Ideally a ticket may look conceptually like:
+
+```text id="4b7f3e"
+Ticket ID: INC1024
+
+Issue:
+Customer cannot stay logged into application.
+
+Conversation:
+Customer: ...
+Agent: ...
+Customer: ...
+
+Resolution:
+Updated session timeout configuration.
+
+Status:
+Resolved
+```
+
+From this we would extract:
+
+```text id="07gyrq"
+ticket_id
+issue
+conversation
+resolution
+status
+```
+
+However, **we should not assume this structure until the actual files are inspected.**
+
+This is an important discovery task.
+
+---
+
+# 10. Chunking Requirement
+
+The requirement explicitly says:
+
+> Some tickets are long threads with multiple back-and-forth messages.
+
+Therefore:
+
+**One entire ticket = one embedding is not recommended.**
+
+A long ticket can contain several unrelated concepts.
+
+### Preferred approach
+
+Use structural/semantic chunking where possible:
+
+```text id="5jj5qi"
+Ticket
+ ├── Issue
+ ├── Conversation segment
+ ├── Conversation segment
+ ├── Conversation segment
+ └── Resolution
+```
+
+If the files don't have reliable structure, use a fallback recursive chunking strategy.
+
+---
+
+# 11. Chunk Content
+
+Each chunk should preserve sufficient context.
+
+For example:
+
+```text id="h8qj9k"
+Ticket ID: INC1024
+
+Issue:
+User is repeatedly logged out.
+
+Conversation:
+Customer reports that the session expires every few minutes.
+
+Resolution:
+Session timeout configuration was corrected.
+```
+
+The chunk should be semantically meaningful rather than merely being:
+
+```text id="9r1t3v"
+characters 1–500
+```
+
+---
+
+# 12. Embedding Strategy
+
+Every searchable historical chunk will be converted into an embedding.
+
+```text id="3d2y6m"
+Chunk
+ ↓
+Embedding Model
+ ↓
+Vector
+```
+
+The incoming search query must be embedded using the **same compatible embedding model**.
+
+```text id="u2af0n"
+Historical:
+Embedding Model A
+        ↓
+Vector space
+
+Query:
+Embedding Model A
+        ↓
+Same vector space
+```
+
+Using incompatible models would make similarity comparison invalid.
+
+---
+
+# 13. ChromaDB Design
+
+Use a persistent ChromaDB collection, conceptually:
+
+```text id="h04ylk"
+support_tickets
+```
+
+Each record contains:
+
+```text id="j2a4hb"
+ID
+Document
+Embedding
+Metadata
+```
+
+Example:
+
+```text id="c2i8zv"
+ID:
+INC1024_chunk_02
+
+Document:
+"User reports being logged out every few minutes..."
+
+Metadata:
+{
+    ticket_id: "INC1024",
+    status: "Resolved",
+    chunk_index: 2,
+    source_file: "INC1024.txt"
+}
+```
+
+---
+
+# 14. Persistence
+
+ChromaDB should be persistent.
+
+We don't want:
+
+```text id="4pgy7h"
+Application starts
+       ↓
+Read 200 files
+       ↓
+Generate all embeddings
+       ↓
+Rebuild database
+```
+
+every time.
+
+Instead:
+
+```text id="3j4k6q"
+First ingestion
+      ↓
+Create vectors
+      ↓
+Persist ChromaDB
+
+Later search
+      ↓
+Reuse existing vectors
+```
+
+---
+
+# 15. Idempotent Ingestion
+
+Repeated ingestion must not create duplicate records.
+
+Use deterministic chunk identifiers conceptually like:
+
+```text id="r3n9d8"
+INC1024_chunk_001
+INC1024_chunk_002
+INC1024_chunk_003
+```
+
+Then ingestion can safely perform upsert/update operations.
+
+---
+
+# 16. Search Flow
+
+The complete search flow becomes:
+
+```text id="39k5a7"
+New Support Ticket
+        │
+        ▼
+GPT-5.6 Luna
+        │
+        ▼
+Query Understanding /
+Normalized Search Representation
+        │
+        ▼
+Embedding Model
+        │
+        ▼
+Query Vector
+        │
+        ▼
+ChromaDB
+        │
+        ▼
+Top 3–4 Similar Chunks
+        │
+        ▼
+Result Processing
+        │
+        ▼
+Agent
+```
+
+---
+
+# 17. Top-K Requirement
+
+The requirement says:
+
+> Find the three or four most similar past tickets.
+
+I recommend:
+
+```text id="cbq5x2"
+TOP_K = 4
+```
+
+as the default.
+
+However, the evaluation criterion remains:
+
+```text id="5f7cb4"
+Correct ticket must appear in Top 3.
+```
+
+`TOP_K` should be configurable rather than hardcoded into the business logic.
+
+---
+
+# 18. Chunk-Level vs Ticket-Level Results
+
+There is an important ambiguity in the requirement.
+
+It says:
+
+> return the closest matching chunks
+
+but the business goal is:
+
+> find similar past tickets.
+
+Suppose:
+
+```text id="l7xk7m"
+Ticket A
+ ├── Chunk 1
+ ├── Chunk 2
+ └── Chunk 3
+
+Ticket B
+ ├── Chunk 1
+ └── Chunk 2
+```
+
+A raw Top-4 search could return:
+
+```text id="y6x3ps"
+Ticket A / Chunk 1
+Ticket A / Chunk 2
+Ticket A / Chunk 3
+Ticket B / Chunk 1
+```
+
+The agent sees only two tickets.
+
+### Recommended approach
+
+Retrieve more chunks internally:
+
+```text id="r1f4t8"
+Top 8–10 chunks
+       ↓
+Group by ticket
+       ↓
+Select strongest matching chunk per ticket
+       ↓
+Return top 3–4 unique tickets
+```
+
+This better matches the **business objective**.
+
+We should document this as a design decision.
+
+---
+
+# 19. Similarity Score
+
+The system must return a score.
+
+However, we need to distinguish:
+
+```text id="f5r4o7"
+Vector distance
+```
+
+from:
+
+```text id="z9k2q1"
+Business-friendly similarity score
+```
+
+We should establish the ChromaDB distance metric and clearly document what the returned score represents.
+
+We should **not call a raw distance "confidence"** unless we explicitly define how that interpretation is derived.
+
+The agent can use the score as a relevance signal.
+
+---
+
+# 20. Mandatory Testing Strategy
+
+This is the major correction based on your first difference.
+
+Testing is now a **first-class functional requirement**, not just an implementation detail.
+
+The system must demonstrate that semantic search works for paraphrased queries.
+
+### Mandatory test
+
+Historical ticket:
+
+```text id="s4b8hz"
+"Session expires randomly every few minutes."
+```
+
+New query:
+
+```text id="p3y7f0"
+"App keeps logging me out."
+```
+
+Expected:
+
+```text id="1r8v8h"
+Historical ticket appears in Top 3.
+```
+
+### Acceptance:
+
+```text id="9kq5om"
+Correct ticket rank <= 3
+        ↓
+PASS
+```
+
+```text id="0w9x3c"
+Correct ticket rank > 3
+        ↓
+FAIL
+```
+
+---
+
+# 21. Testing Must Demonstrate Semantic Understanding
+
+We should deliberately ensure the test isn't accidentally passing because of keyword overlap.
+
+### Example
+
+Historical:
+
+> Session expires randomly every few minutes.
+
+Query:
+
+> App keeps logging me out.
+
+Shared meaningful keywords:
+
+```text
+None / almost none
+```
+
+Yet expected semantic relationship:
+
+```text
+session termination
+≈
+repeated logout
+```
+
+This validates the actual purpose of semantic search.
+
+---
+
+# 22. Evaluation Dataset
+
+Although one test case is explicitly required, I recommend creating several evaluation cases.
+
+### Test categories
+
+| Test               | Example                                 |
+| ------------------ | --------------------------------------- |
+| Exact-ish          | "User is logged out repeatedly"         |
+| Paraphrase         | "App keeps kicking me out"              |
+| No keyword overlap | "Authentication doesn't persist"        |
+| Short query        | "Keeps signing me out"                  |
+| Long query         | Detailed description of repeated logout |
+| Ambiguous query    | Multiple possible historical issues     |
+
+Metrics:
+
+### Recall@3
+
+Did the expected ticket appear in the first three results?
+
+### Recall@4
+
+Did it appear in the first four?
+
+Potential additional metrics:
+
+* Top-1 accuracy
+* Mean Reciprocal Rank
+* Average retrieval score
+
+For this assignment, **Recall@3 is the primary acceptance metric**.
+
+---
+
+# 23. Retrieval vs LLM Reasoning
+
+We should maintain a clean separation.
+
+### Retrieval
+
+```text id="g3s8tq"
+GPT-5.6 Luna
+      ↓
+Query understanding
+      ↓
+Embedding
+      ↓
+ChromaDB
+      ↓
+Top-K candidates
+```
+
+### Optional reasoning
+
+After retrieval:
+
+```text id="0h8h2v"
+New ticket
+     +
+Top 4 historical tickets
+     ↓
+GPT-5.6 Luna
+     ↓
+Relevance analysis
+```
+
+The second GPT step can eventually answer:
+
+> "Which historical ticket is the closest match and why?"
+
+and:
+
+> "Is the historical resolution likely applicable?"
+
+But **this is not required for the MVP acceptance criterion**.
+
+---
+
+# 24. Why ChromaDB remains essential
+
+GPT-5.6 Luna does not replace the vector database.
+
+We should not do:
+
+```text id="7a1pko"
+New ticket
+ ↓
+GPT
+ ↓
+all 200 tickets
+ ↓
+choose one
+```
+
+Instead:
+
+```text id="e0ak6b"
+New ticket
+ ↓
+GPT
+ ↓
+Embedding
+ ↓
+ChromaDB
+ ↓
+Top 4 candidates
+ ↓
+(optional) GPT reasoning
+```
+
+This is more scalable and demonstrates the intended **RAG retrieval architecture**.
+
+---
+
+# 25. GPT Usage During Historical Ingestion
+
+This remains a design decision.
+
+There are two possible approaches.
+
+### Option A — GPT only for query
+
+```text id="7j4kq0"
+Historical ticket
+ → Parse
+ → Chunk
+ → Embedding
+ → ChromaDB
+
+New ticket
+ → GPT
+ → Embedding
+ → ChromaDB
+```
+
+Advantages:
+
+* fewer GPT API calls
+* lower cost
+* faster ingestion
+* simpler
+
+### Option B — GPT for historical normalization + query
+
+```text id="v0p2de"
+Historical ticket
+ → Parse
+ → Chunk
+ → GPT
+ → Structured representation
+ → Embedding
+ → ChromaDB
+
+New ticket
+ → GPT
+ → Structured representation
+ → Embedding
+ → ChromaDB
+```
+
+Potentially better for messy conversational tickets.
+
+### Decision
+
+**Do not finalize this until we inspect actual ticket files.**
+
+If the historical tickets are already well structured, Option A is preferable.
+
+If they're messy transcripts, Option B becomes more attractive.
+
+---
+
+# 26. Configuration
+
+The following should be configurable:
+
+```text id="t6jv7a"
+LLM model
+Embedding model
+Ticket directory
+ChromaDB persistence path
+Collection name
+Chunk size
+Chunk overlap
+Top-K
+Distance metric
+```
+
+For example:
+
+```text id="4z8c1d"
+.env
+   │
+   └── LLM API key
+
+Application configuration
+   │
+   ├── model settings
+   ├── ChromaDB path
+   ├── chunk configuration
+   └── retrieval configuration
+```
+
+The API key should remain in `.env`.
+
+---
+
+# 27. Component Responsibilities
+
+The final component model becomes:
+
+```text id="f1v9c7"
+TicketLoader
+     │
+     ▼
+TicketParser
+     │
+     ▼
+Chunker
+     │
+     ▼
+EmbeddingService ────────┐
+                         │
+                         ▼
+                      ChromaDB
+                         ▲
+                         │
+SearchService ───────────┘
+     │
+     ├── GPT-5.6 Luna
+     │
+     ├── EmbeddingService
+     │
+     └── ResultProcessor
+
+Evaluator
+     │
+     └── Recall@3
+```
+
+---
+
+# 28. Requirement Traceability
+
+| Requirement             | Technical solution                      | Acceptance criteria                             |
+| ----------------------- | --------------------------------------- | ----------------------------------------------- |
+| ~200 historical tickets | `.txt` ingestion                        | All valid files processed                       |
+| Long ticket threads     | Context-aware chunking                  | Long tickets produce multiple meaningful chunks |
+| Semantic search         | Embeddings + ChromaDB                   | Meaning-based matches retrieved                 |
+| GPT-5.6 Luna required   | Query understanding layer               | New query processed through GPT                 |
+| Metadata                | ChromaDB metadata                       | Ticket ID/status available                      |
+| 3–4 results             | Configurable Top-K                      | Top results returned                            |
+| Similarity score        | ChromaDB distance/similarity handling   | Score included with every result                |
+| New ticket search       | Query → GPT → embedding → vector search | Search works for free-form input                |
+| Paraphrased query       | Dedicated evaluation cases              | Semantically equivalent ticket retrieved        |
+| No keyword dependency   | Paraphrase/no-overlap tests             | Correct match despite different wording         |
+| Top-3 criterion         | Recall@3                                | Correct ticket rank ≤ 3                         |
+| Persistent database     | Persistent ChromaDB                     | No unnecessary re-embedding                     |
+| Duplicate prevention    | Deterministic chunk IDs                 | Re-ingestion doesn't duplicate vectors          |
+
+---
+
+# 29. Updated Acceptance Criteria
+
+The MVP is **DONE** only when all of the following are satisfied:
+
+### AC-01
+
+System successfully loads the historical ticket corpus.
+
+### AC-02
+
+Long ticket threads are chunked into semantically meaningful units.
+
+### AC-03
+
+Each chunk has an embedding stored in ChromaDB.
+
+### AC-04
+
+Ticket metadata is stored with each chunk.
+
+### AC-05
+
+A new support ticket can be entered as free-form text.
+
+### AC-06
+
+GPT-5.6 Luna is used in the new-ticket processing workflow.
+
+### AC-07
+
+The query is embedded using the same compatible embedding model used for historical data.
+
+### AC-08
+
+ChromaDB returns the most relevant historical chunks.
+
+### AC-09
+
+The system returns 3–4 results containing:
+
+* ticket ID
+* matching text
+* score
+* resolution status
+
+### AC-10
+
+The system successfully handles a paraphrased query with little/no keyword overlap.
+
+### AC-11
+
+For:
+
+> "App keeps logging me out"
+
+against a historical ticket describing:
+
+> "Session expires randomly every few minutes"
+
+the correct historical ticket appears in **Top 3**.
+
+### AC-12
+
+The result score is clearly identified as a similarity/distance measure and is not incorrectly represented as guaranteed confidence.
+
+---
+
+# 30. Final Mind Map
+
+This is the version I would now use for your requirement-analysis/mind-mapping exercise:
+
+```text id="q9v3a2"
+                 SEMANTIC SEARCH OVER
+                 CLIENT SUPPORT TICKETS
+                          │
+ ┌────────────────────────┼────────────────────────┐
+ │                        │                        │
+ ▼                        ▼                        ▼
+DATA                   AI / RETRIEVAL           TESTING
+ │                        │                        │
+ ├─ ~200 .txt             ├─ GPT-5.6 Luna         ├─ Paraphrase
+ ├─ Ticket ID             │   │                    ├─ No keyword overlap
+ ├─ Issue                 │   └─ Query             ├─ Top-3
+ ├─ Conversation          │      understanding     ├─ Recall@3
+ ├─ Resolution            │                        └─ Edge cases
+ └─ Status                ├─ Embedding Model
+                          │
+                          └─ ChromaDB
+                                │
+                                ├─ vectors
+                                ├─ metadata
+                                ├─ persistence
+                                └─ similarity search
+
+                          │
+                          ▼
+                     INGESTION
+                          │
+                    Parse → Chunk
+                          │
+                       Embed
+                          │
+                      ChromaDB
+
+                          │
+                          ▼
+                       SEARCH
+                          │
+                    New Ticket
+                          │
+                    GPT-5.6 Luna
+                          │
+                  Query Representation
+                          │
+                    Embedding Model
+                          │
+                       ChromaDB
+                          │
+                     Top 8–10 chunks
+                          │
+                    Group by Ticket
+                          │
+                    Top 3–4 Tickets
+                          │
+               Score + Metadata + Text
+
+                          │
+                          ▼
+                     OPTIONAL
+                  LLM REASONING
+                          │
+                  Retrieved Tickets
+                          +
+                    New Ticket
+                          │
+                    GPT-5.6 Luna
+                          │
+                  Relevance / Resolution
+```
+
+
+
+ RAG SEMANTIC SUPPORT TICKET SEARCH
+EXECUTOR AGENT RUNTIME PLANNING SPECIFICATION
+
+Purpose
+-------
+This document defines the runtime planning workflow for the Executor Agent.
+
+The Executor Agent must NOT rely on a pre-created fixed task sequence for every
+customer query. Every new customer support ticket is treated as a new Query.
+For each Query, the Planner creates a unique runtime Query folder and generates
+the task files required for that specific execution.
+
+The runtime plan must be persisted under:
+
+Task 16 RAG Arch/
+└── Plan/
+    └── <Query folder created at runtime>/
+        ├── Task_01_*.txt
+        ├── Task_02_*.txt
+        ├── Task_03_*.txt
+        └── ...
+
+The exact Query folder name and task files are decided dynamically at runtime
+by the Planner Agent.
+
+1. RUNTIME INPUT
+----------------
+Input to the Planner:
+
+Query = New support ticket from the customer.
+
+Example:
+"App keeps logging me out."
+
+The Planner must analyze the Query and determine the execution steps required
+to find relevant historical support tickets.
+
+2. RUNTIME OUTPUT
+-----------------
+For every new Query, the Planner must create:
+
+Plan/<Query folder>/
+
+The Query folder should have a unique, filesystem-safe name. It may contain a
+sanitized query identifier plus a timestamp or unique execution ID.
+
+Example:
+
+Plan/
+└── Query_20260826_180500_App_keeps_logging_me_out/
+    ├── Task_01_Analyze_Query.txt
+    ├── Task_02_Prepare_Search_Query.txt
+    ├── Task_03_Generate_Query_Embedding.txt
+    ├── Task_04_Search_ChromaDB.txt
+    ├── Task_05_Rank_And_Filter_Results.txt
+    └── Task_06_Return_Search_Results.txt
+
+The above tasks are examples only. The Planner must decide the actual tasks at
+runtime based on the Query and available system capabilities.
+
+3. EXECUTOR AGENT RESPONSIBILITY
+--------------------------------
+The Executor Agent executes the tasks generated by the Planner.
+
+For each task, the Executor Agent must:
+
+1. Read the task instructions.
+2. Execute the required operation.
+3. Validate the operation result.
+4. Persist relevant output/artifacts if required.
+5. Record success or failure.
+6. Pass the resulting context to the next task.
+7. Stop or recover according to the task's failure instructions.
+
+The Executor Agent must not invent additional business steps when the generated
+plan already defines the required workflow. If a task cannot be completed, the
+Executor must report the failure and provide enough information for the planner
+or recovery mechanism to decide the next action.
+
+4. RUNTIME PLANNING LOGIC
+-------------------------
+The Planner should reason over the Query and create an execution plan.
+
+The normal semantic-search workflow is expected to contain steps similar to:
+
+A. Understand the customer Query.
+B. Identify the customer's problem, symptoms, and useful technical concepts.
+C. Prepare a search-oriented representation of the Query.
+D. Generate an embedding using the configured embedding model.
+E. Search the historical support-ticket embeddings in ChromaDB.
+F. Retrieve candidate chunks.
+G. Rank and/or filter the candidates.
+H. Avoid excessive duplicate chunks from the same historical ticket when the
+   business requirement is to return distinct historical tickets.
+I. Return the top 3-4 most relevant historical ticket results.
+J. Include ticket ID, matching chunk/text, similarity/distance score, and
+   resolution status.
+K. Preserve enough information for the support agent to judge the relevance.
+
+GPT-5.6 Luna is required as part of the Query-understanding workflow. The
+Planner may create additional GPT-related tasks when the Query requires them.
+
+The Planner must not assume that every Query requires exactly the same number
+of tasks. Task creation is dynamic.
+
+5. IMPORTANT AI RESPONSIBILITY BOUNDARIES
+-----------------------------------------
+GPT-5.6 Luna:
+- Understands and/or normalizes the incoming customer Query.
+- May identify the issue, symptoms, entities, and technical concepts.
+- May assist with reasoning over retrieved candidates if such a task is
+  generated by the Planner.
+
+Embedding Model:
+- Converts historical ticket chunks into vectors during ingestion.
+- Converts the runtime Query/search representation into a vector.
+- The same compatible embedding model must be used for both document and query
+  embeddings.
+
+ChromaDB:
+- Stores historical ticket chunk embeddings and metadata.
+- Performs vector similarity retrieval.
+
+Executor Agent:
+- Executes the runtime tasks generated by the Planner.
+- Does not replace the embedding model or ChromaDB.
+
+6. HISTORICAL DATA ASSUMPTION
+-----------------------------
+Historical support tickets have already been or will be ingested into the
+configured ChromaDB collection before runtime search.
+
+If the required vector collection is missing or unavailable, the Planner may
+generate an initialization/validation task or an ingestion/recovery task if
+the runtime environment supports it.
+
+The Planner should verify prerequisites before attempting semantic search.
+
+7. RUNTIME TASK FILE REQUIREMENTS
+---------------------------------
+Each generated Task_<number>_<name>.txt file should contain enough information
+for the Executor Agent to execute the task independently.
+
+Every task should define, where applicable:
+
+- Task ID
+- Task name
+- Objective
+- Input
+- Expected input/context
+- Action to perform
+- Tool/component to use
+- Expected output
+- Output location or artifact
+- Validation criteria
+- Failure condition
+- Recovery/next-action guidance
+- Dependency on previous tasks
+
+Example task structure:
+
+TASK ID:
+TASK NAME:
+
+OBJECTIVE:
+What this task must accomplish.
+
+INPUT:
+Information supplied to this task.
+
+ACTION:
+Exact operation the Executor Agent must perform.
+
+EXPECTED OUTPUT:
+What successful execution should produce.
+
+VALIDATION:
+How the Executor Agent determines that the task succeeded.
+
+FAILURE CONDITION:
+What constitutes failure.
+
+NEXT STEP:
+What task/result should follow.
+
+8. TASK DEPENDENCY MODEL
+------------------------
+Tasks should form an executable dependency chain.
+
+Typical dependency:
+
+Task 01
+  ↓
+Task 02
+  ↓
+Task 03
+  ↓
+Task 04
+  ↓
+Task 05
+  ↓
+Task 06
+
+However, the Planner may create branching or additional tasks when required.
+
+For example:
+
+Query analysis
+     ↓
+Prerequisite validation
+     ↓
+ ┌───┴─────────────┐
+ │                 │
+Search preparation  Metadata/filter preparation
+ │                 │
+ └───────┬─────────┘
+         ↓
+    ChromaDB search
+         ↓
+    Result ranking
+         ↓
+    Final response
+
+9. TASK EXECUTION STATE
+-----------------------
+The runtime Query folder should be capable of showing execution progress.
+
+Recommended task states:
+
+PENDING
+IN_PROGRESS
+COMPLETED
+FAILED
+SKIPPED
+BLOCKED
+
+The Executor Agent should update task status or maintain an execution log so
+that the runtime execution can be audited.
+
+10. FAILURE AND RECOVERY
+------------------------
+The Planner should account for predictable failures.
+
+Examples:
+
+- GPT API unavailable.
+- API key missing.
+- Embedding model unavailable.
+- ChromaDB collection missing.
+- ChromaDB query failure.
+- No relevant results found.
+- Invalid Query.
+- Malformed historical metadata.
+- Embedding generation failure.
+- Duplicate/insufficient results.
+
+For recoverable failures, the Planner may create a recovery task.
+
+For non-recoverable failures, execution should terminate with a clear failure
+status and reason.
+
+11. SEARCH RESULT ACCEPTANCE CRITERIA
+-------------------------------------
+The Executor Agent's successful search execution must produce:
+
+- Top 3-4 relevant historical results.
+- Ticket ID for each result.
+- Matching historical chunk/text.
+- Similarity/distance score.
+- Resolution status where available.
+
+The primary semantic-search acceptance test is:
+
+Historical ticket:
+"Session expires randomly every few minutes."
+
+New Query:
+"App keeps logging me out."
+
+The correct historical ticket must appear within the Top 3 results.
+
+This test validates semantic similarity rather than keyword matching.
+
+12. QUERY FOLDER ISOLATION
+--------------------------
+Every new customer Query must receive a new Query folder.
+
+Execution artifacts from one Query must not overwrite artifacts from another
+Query.
+
+Example:
+
+Plan/
+├── Query_001_App_keeps_logging_me_out/
+│   ├── Task_01_*.txt
+│   ├── Task_02_*.txt
+│   └── ...
+│
+├── Query_002_Payment_failed_after_checkout/
+│   ├── Task_01_*.txt
+│   ├── Task_02_*.txt
+│   └── ...
+│
+└── Query_003_Reset_password_link_expired/
+    ├── Task_01_*.txt
+    ├── Task_02_*.txt
+    └── ...
+
+The Query folders and their task files are runtime artifacts and must be
+created dynamically.
+
+13. SECURITY
+------------
+The GPT API key must be supplied through the application's environment
+configuration, for example a .env file.
+
+The Planner and Executor must never place the API key directly into:
+
+- Task files
+- Query text
+- logs
+- result files
+- source code
+- Git-tracked files
+
+The .env file must be excluded from version control.
+
+14. PLANNER DECISION PRINCIPLE
+------------------------------
+The Planner should create the smallest complete executable plan that satisfies
+the customer's Query and the semantic-search requirements.
+
+It should NOT blindly generate every possible task for every Query.
+
+For example, if prerequisite validation has already established that the
+embedding model is loaded and ChromaDB is available, the Planner should not
+create unnecessary initialization tasks.
+
+Likewise, if the Query requires additional interpretation or filtering, the
+Planner may create additional tasks.
+
+15. EXPECTED END-TO-END RUNTIME BEHAVIOR
+----------------------------------------
+For every new customer ticket:
+
+1. Receive Query.
+2. Create a unique Query folder under Plan/.
+3. Analyze Query.
+4. Dynamically generate the required Task_*.txt files.
+5. Executor Agent reads the generated tasks.
+6. Executor executes tasks in dependency order.
+7. Each task validates its result.
+8. Execution artifacts/results remain inside the Query folder where applicable.
+9. Final task produces the ranked historical-ticket search result.
+10. Execution is marked COMPLETED or FAILED.
+11. A new customer Query starts a completely new runtime planning execution.
+
+16. FUTURE EXTENSIBILITY
+------------------------
+The runtime planning design should allow additional tasks to be introduced
+without changing the fundamental architecture.
+
+Potential future tasks include:
+
+- Query classification.
+- Product/component identification.
+- Resolution-status filtering.
+- Metadata filtering.
+- Result re-ranking.
+- GPT-based relevance evaluation.
+- Resolution recommendation.
+- Confidence/relevance explanation.
+- Human approval.
+- Feedback capture.
+- Search-quality evaluation.
+
+These are optional extensions and should only be generated when the Planner
+determines they are necessary for the runtime Query or explicitly enabled by
+the system configuration.
+
+FINAL DESIGN PRINCIPLE
+----------------------
+The Planner creates the runtime execution plan.
+The Query folder stores the plan for that specific customer ticket.
+The Task files define the individual executable steps.
+The Executor Agent executes those tasks.
+The plan is dynamic: different customer Queries may result in different task
+sets and different execution paths.
+
+The architecture therefore follows:
+
+Customer Query
+    ↓
+Runtime Planner
+    ↓
+Create Plan/<Query folder>/
+    ↓
+Generate Task_*.txt files
+    ↓
+Executor Agent
+    ↓
+Execute tasks
+    ↓
+ChromaDB semantic retrieval
+    ↓
+Ranked historical tickets
+    ↓
+Final result
+
+
+
+Tool REgistry.
+
+For example, runtime tasks now explicitly reference tools such as:
+
+read_customer_query
+create_query_folder
+gpt5_6_luna
+embedding_generate
+chromadb_get_collection
+chromadb_query
+chromadb_get
+rank_search_results
+validate_search_results
+evaluate_top_k
+write_runtime_artifact
+write_execution_log
+get_runtime_config
+validate_environment
+
+It also defines the additional ingestion tools:
+
+list_ticket_files
+read_ticket_file
+parse_ticket
+chunk_ticket
+chromadb_upsert
+validate_ingestion
+
+Most importantly, every dynamically generated Task_*.txt is now required to have a TOOLS: section containing the actual canonical tool name(s) that the Executor Agent must call.
+
+For example:
+
+TASK_ID:
+Task_08
+
+TASK_NAME:
+Search Historical Tickets
+
+TOOLS:
+- chromadb_get_collection
+- chromadb_query

@@ -1,0 +1,41 @@
+TASK_ID: 7
+TASK_NAME: Search_ChromaDB
+
+OBJECTIVE:
+Query the persistent ChromaDB for similar historical chunks.
+
+INPUT:
+Query embedding vector
+
+PRIMARY_TOOL:
+chroma_vector_store
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Perform vector similarity search, retrieve top-K candidates.
+
+EXPECTED_OUTPUT:
+List of candidate chunks with metadata and scores.
+
+ARTIFACT_LOCATION:
+raw_candidates.json
+
+VALIDATION:
+Returns a list (may be empty).
+
+FAILURE_CONDITION:
+ChromaDB query error or collection missing.
+
+RECOVERY/NEXT_ACTION:
+Signal failure; possibly trigger ingestion.
+
+TASK_DEPENDENCIES:
+Task_06_Generate_Query_Embedding
+
+TOOL_DEPENDENCIES:
+chroma_vector_store
+
+STATE:
+PENDING

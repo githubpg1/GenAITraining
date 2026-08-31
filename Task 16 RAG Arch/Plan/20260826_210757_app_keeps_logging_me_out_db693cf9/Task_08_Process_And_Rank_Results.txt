@@ -1,0 +1,41 @@
+TASK_ID: 8
+TASK_NAME: Process_And_Rank_Results
+
+OBJECTIVE:
+Filter, deduplicate by ticket ID, rank candidates.
+
+INPUT:
+Raw candidates from ChromaDB
+
+PRIMARY_TOOL:
+candidate_result_processor
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Apply relevance threshold, group by ticket_id, pick best chunk per ticket, sort by score.
+
+EXPECTED_OUTPUT:
+Ranked list of unique ticket results.
+
+ARTIFACT_LOCATION:
+processed_results.json
+
+VALIDATION:
+List length <= final_top_k and >= 0.
+
+FAILURE_CONDITION:
+Processing error (e.g., invalid data).
+
+RECOVERY/NEXT_ACTION:
+Return empty list.
+
+TASK_DEPENDENCIES:
+Task_07_Search_ChromaDB
+
+TOOL_DEPENDENCIES:
+candidate_result_processor
+
+STATE:
+PENDING

@@ -1,0 +1,41 @@
+TASK_ID: 5
+TASK_NAME: Normalize_Query_With_GPT
+
+OBJECTIVE:
+Use GPT-5.6 Luna to understand/normalize the query.
+
+INPUT:
+Query analysis from previous step
+
+PRIMARY_TOOL:
+gpt_query_normalizer
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Call LLM API with prompt to produce normalized search representation.
+
+EXPECTED_OUTPUT:
+Normalized query text.
+
+ARTIFACT_LOCATION:
+normalized_query.txt
+
+VALIDATION:
+Non-empty string, length > 0.
+
+FAILURE_CONDITION:
+LLM API call failed or returned empty.
+
+RECOVERY/NEXT_ACTION:
+Fall back to raw query.
+
+TASK_DEPENDENCIES:
+Task_04_Analyze_Query
+
+TOOL_DEPENDENCIES:
+gpt_query_normalizer
+
+STATE:
+PENDING

@@ -1,0 +1,14 @@
+Ticket ID: INC1045
+
+Issue:
+VPN connection drops intermittently.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Applied Windows update and checked hardware.
+
+Status:
+Resolved

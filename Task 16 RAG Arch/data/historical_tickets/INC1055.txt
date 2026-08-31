@@ -1,0 +1,17 @@
+Ticket ID: INC1055
+
+Issue:
+VPN connection drops intermittently.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Updated SMTP credentials in the email client.
+
+Status:
+In Progress

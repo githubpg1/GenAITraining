@@ -1,0 +1,41 @@
+TASK_ID: 9
+TASK_NAME: Format_Final_Results
+
+OBJECTIVE:
+Prepare final output with required fields.
+
+INPUT:
+Processed results
+
+PRIMARY_TOOL:
+search_result_formatter
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Format each result to include ticket_id, matching_text, score, resolution_status.
+
+EXPECTED_OUTPUT:
+Final results JSON or text.
+
+ARTIFACT_LOCATION:
+final_results.json
+
+VALIDATION:
+Contains required fields for each result.
+
+FAILURE_CONDITION:
+Formatting failed.
+
+RECOVERY/NEXT_ACTION:
+Return empty results.
+
+TASK_DEPENDENCIES:
+Task_08_Process_And_Rank_Results
+
+TOOL_DEPENDENCIES:
+search_result_formatter
+
+STATE:
+PENDING

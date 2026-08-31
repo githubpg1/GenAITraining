@@ -1,0 +1,20 @@
+Ticket ID: INC1092
+
+Issue:
+Application crashes when opening a specific file.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Reconfigured VPN client with new gateway settings.
+
+Status:
+Resolved

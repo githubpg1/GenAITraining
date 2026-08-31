@@ -1,0 +1,14 @@
+Ticket ID: INC1173
+
+Issue:
+User cannot stay logged into application.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Updated session timeout configuration.
+
+Status:
+In Progress

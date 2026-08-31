@@ -1,0 +1,20 @@
+Ticket ID: INC1004
+
+Issue:
+Unable to send emails after password change.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Updated SMTP credentials in the email client.
+
+Status:
+Open

@@ -1,0 +1,41 @@
+TASK_ID: 6
+TASK_NAME: Generate_Query_Embedding
+
+OBJECTIVE:
+Convert normalized query to vector using embedding model.
+
+INPUT:
+Normalized query text
+
+PRIMARY_TOOL:
+embedding_service
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Embed the text using the configured embedding model.
+
+EXPECTED_OUTPUT:
+Embedding vector (list of floats).
+
+ARTIFACT_LOCATION:
+query_embedding.json
+
+VALIDATION:
+Vector of expected dimension, not all zeros.
+
+FAILURE_CONDITION:
+Embedding generation failed.
+
+RECOVERY/NEXT_ACTION:
+Abort search.
+
+TASK_DEPENDENCIES:
+Task_05_Normalize_Query_With_GPT
+
+TOOL_DEPENDENCIES:
+embedding_service
+
+STATE:
+PENDING

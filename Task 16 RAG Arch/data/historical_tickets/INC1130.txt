@@ -1,0 +1,15 @@
+Ticket ID: INC1130
+
+Issue:
+Error 404 when accessing internal portal.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Applied Windows update and checked hardware.
+
+Status:
+Resolved

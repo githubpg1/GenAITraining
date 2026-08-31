@@ -1,0 +1,19 @@
+Ticket ID: INC1083
+
+Issue:
+Mobile app fails to sync with server.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Updated SMTP credentials in the email client.
+
+Status:
+In Progress

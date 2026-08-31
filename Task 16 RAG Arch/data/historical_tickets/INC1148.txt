@@ -1,0 +1,14 @@
+Ticket ID: INC1148
+
+Issue:
+VPN connection drops intermittently.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Reconfigured VPN client with new gateway settings.
+
+Status:
+In Progress

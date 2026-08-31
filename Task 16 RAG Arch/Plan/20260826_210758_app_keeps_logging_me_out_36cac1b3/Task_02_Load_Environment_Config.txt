@@ -1,0 +1,41 @@
+TASK_ID: 2
+TASK_NAME: Load_Environment_Config
+
+OBJECTIVE:
+Load environment variables and model configuration.
+
+INPUT:
+Paths to .env and model_config.yaml
+
+PRIMARY_TOOL:
+environment_config_loader
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Read .env, load model_config.yaml, validate required fields.
+
+EXPECTED_OUTPUT:
+Configuration object.
+
+ARTIFACT_LOCATION:
+config.json (in query folder)
+
+VALIDATION:
+All required config present.
+
+FAILURE_CONDITION:
+Missing API key or model config.
+
+RECOVERY/NEXT_ACTION:
+Abort with clear error message.
+
+TASK_DEPENDENCIES:
+Task_01_Initialize_Query_Folder
+
+TOOL_DEPENDENCIES:
+environment_config_loader
+
+STATE:
+PENDING

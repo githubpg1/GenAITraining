@@ -1,0 +1,20 @@
+Ticket ID: INC1190
+
+Issue:
+User cannot stay logged into application.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Applied Windows update and checked hardware.
+
+Status:
+Resolved

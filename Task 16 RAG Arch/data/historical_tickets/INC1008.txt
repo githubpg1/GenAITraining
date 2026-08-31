@@ -1,0 +1,15 @@
+Ticket ID: INC1008
+
+Issue:
+User cannot stay logged into application.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Cleared app cache and forced a fresh sync.
+
+Status:
+Closed

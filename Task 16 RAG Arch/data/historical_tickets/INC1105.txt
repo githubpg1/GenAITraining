@@ -1,0 +1,14 @@
+Ticket ID: INC1105
+
+Issue:
+Print job fails with error code 0x80004005.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Renewed the license key and reactivated.
+
+Status:
+In Progress

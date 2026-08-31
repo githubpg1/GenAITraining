@@ -1,0 +1,41 @@
+TASK_ID: 3
+TASK_NAME: Validate_Corpus
+
+OBJECTIVE:
+Ensure historical ticket corpus is present and readable.
+
+INPUT:
+Path to historical_tickets folder
+
+PRIMARY_TOOL:
+corpus_inspector
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Check folder exists, count .txt files, basic sanity.
+
+EXPECTED_OUTPUT:
+Corpus validation report.
+
+ARTIFACT_LOCATION:
+corpus_status.json
+
+VALIDATION:
+At least one ticket file present.
+
+FAILURE_CONDITION:
+No ticket files found.
+
+RECOVERY/NEXT_ACTION:
+Trigger ingestion recovery if supported.
+
+TASK_DEPENDENCIES:
+Task_02_Load_Environment_Config
+
+TOOL_DEPENDENCIES:
+corpus_inspector
+
+STATE:
+PENDING

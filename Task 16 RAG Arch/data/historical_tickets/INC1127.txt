@@ -1,0 +1,18 @@
+Ticket ID: INC1127
+
+Issue:
+Error 404 when accessing internal portal.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Increased database connection pool size.
+
+Status:
+Resolved

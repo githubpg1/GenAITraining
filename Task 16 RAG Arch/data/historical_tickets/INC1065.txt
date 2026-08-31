@@ -1,0 +1,14 @@
+Ticket ID: INC1065
+
+Issue:
+Mobile app fails to sync with server.
+
+Conversation:
+This is a detailed message from the customer about the issue. It includes multiple sentences and some technical details. We need to consider various factors such as environment, configuration, and logs.
+Agent: Brief update on the situation.
+
+Resolution:
+Reset the print spooler service.
+
+Status:
+Closed

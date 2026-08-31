@@ -1,0 +1,61 @@
+## Plan: Runtime Executor Task Specification
+
+Create an executor-ready specification at `Tasks/Task 16 RAG Arch/Plan/RUNTIME_EXECUTOR_PLAN_SPECIFICATION.txt`. It will define how a Planner creates a unique runtime Query folder for every new customer ticket, dynamically generates task files, and dynamically creates/registers the tools required by those tasks. The Executor reads, runs, validates, records, and chains the generated tasks; no fixed task sequence or fixed runtime tool set is required for all Queries. Additionally, the specification mandates externalizing model configuration to avoid hardcoded model names in Python code.
+
+**Steps**
+1. Add the static runtime planning specification under the existing `Task 16 RAG Arch/Plan/` directory. Preserve the requested capitalized `Plan` folder and use an ASCII `.txt` filename.
+2. Define runtime input and isolation: Query means the new customer support ticket; create a filesystem-safe unique folder using sanitized query text plus timestamp/execution ID; never overwrite another Query folder; keep task files, tool definitions/configuration, outputs, status, and logs inside it.
+3. Define Planner selection rules. Analyze the Query, system capabilities, and prerequisites, then create the smallest complete executable plan. The Planner must decide both the task set and the tools needed for each task; it must not blindly emit every possible task or tool.
+4. Define the dynamic runtime tool lifecycle. For each selected task, the Planner must: identify the required capability, create or provision the tool definition/configuration if it does not exist, validate that the tool is available, register it in the Query-specific tool manifest, bind the task to its tool ID/version, and record tool dependencies. Tool creation must be idempotent within one Query and isolated from other Queries.
+5. Define the Query-specific tool manifest, such as `tools.json` or `TOOLS.txt`, containing tool ID, name, purpose, input/output schema, implementation/provider, configuration reference, required permissions, dependency tools, version, status, validation result, and failure/recovery behavior. Never store secrets in this manifest.
+6. Define the logical capabilities that may be created at runtime: `query_folder_manager`, `task_file_writer`, `runtime_state_store`, `execution_log_writer`, `environment_config_loader`, `secret_validator`, `corpus_inspector`, `metadata_validator`, `ticket_query_analyzer`, `gpt_query_normalizer`, `embedding_service`, `chroma_vector_store`, `candidate_result_processor`, `search_result_formatter`, `acceptance_evaluator`, and `recovery_task_generator`. These are capability templates, not mandatory pre-created tools; the Planner instantiates only the ones selected for the current Query.
+7. Define each tool's responsibility and binding. Folder/task tools create and persist runtime artifacts; configuration/security tools load non-secret settings and validate credentials; analysis tools identify symptoms/entities and normalize the Query with GPT-5.6 Luna; embedding and Chroma tools create/query vectors; processing tools filter, deduplicate by ticket ID, rank, and format results; evaluation tools verify Recall@3; recovery tools create bounded recovery tasks. Every generated task must name exactly one primary tool and any declared tool dependencies.
+8. Define the task-file contract. Each `Task_<number>_<name>.txt` must contain Task ID, name, objective, input/context, primary tool ID, tool version/configuration reference, exact action, expected output, artifact location, validation, failure condition, recovery/next action, task dependencies, tool dependencies, and state. Each task must pass structured context and artifact references to downstream tasks.
+9. Define dynamic task families and dependencies: Query-folder initialization; tool discovery/provisioning; environment and collection validation; Query analysis; GPT normalization; query embedding; ChromaDB retrieval; candidate ranking/deduplication; final formatting; and acceptance evaluation. Permit branches for metadata filtering, ambiguity, re-ranking, GPT relevance analysis, or tool recovery, with explicit joins. Tool provisioning must complete before the dependent task enters IN_PROGRESS.
+10. Define prerequisites and ingestion recovery. Historical tickets are assumed indexed before search; if the collection is missing or empty, create ingestion/recovery tasks and their required parser, chunker, embedding, and vector-store tools only when supported. Any ingestion path must inspect real ticket structure first, use deterministic IDs, preserve metadata, use the same embedding model for corpus/query, and be idempotent.
+11. Define state and failure recovery for invalid Query, tool creation/registration failure, missing API key, GPT outage, embedding outage or dimension mismatch, missing collection, ChromaDB errors, malformed metadata, no relevant results, and insufficient unique tickets. Use PENDING, IN_PROGRESS, COMPLETED, FAILED, SKIPPED, and BLOCKED for both tasks and tools; use bounded recovery and clear terminal reasons.
+12. Define security and score semantics. Secrets must come only from environment configuration and never appear in task files, Query text, tool manifests, logs, results, source, or Git. Results must label ChromaDB distance or derived similarity and must not claim guaranteed confidence. Persist model, collection, threshold, top-K, execution ID, tool IDs, and versions for auditability.
+13. Define completion criteria. Successful execution returns 3-4 relevant historical results with ticket ID, matching text/chunk, score, and resolution status where available. The correct ticket for `App keeps logging me out` versus `Session expires randomly every few minutes` must rank in Top 3. Mark the Query COMPLETED only after tools, tasks, output validation, and state persistence succeed.
+14. Define extensibility and boundaries. Optional runtime tools/tasks include classification, product identification, metadata filtering, re-ranking, GPT relevance analysis, resolution recommendation, human approval, feedback, and search-quality evaluation. Automatic resolution/updates/replies, fine-tuning, real-time ingestion, distributed infrastructure, and automatic closure remain out of scope.
+15. Define the model configuration requirement: Model names (LLM and embedding) must never be hardcoded in Python code. The Planner, Executor, Tool Registry, LLM tools, embedding tools, and business logic must obtain model names exclusively from a dedicated model configuration file.
+    - Create a dedicated model configuration file at `Task 16 RAG Arch/config/model_config.yaml` as the single source of truth for model selection.
+    - The configuration file must contain sections for LLM and embedding models, each with provider and model fields (example values are configuration-only, not to be hardcoded).
+    - Python code must load the model configuration dynamically (e.g., via a ModelConfigLoader) and must not contain hardcoded model names as constants.
+    - The same configured embedding model must be used for both historical ticket ingestion and runtime query embedding.
+    - The configuration must support provider selection (e.g., openai, huggingface, etc.).
+    - Implement a dedicated configuration loader (ModelConfigLoader) responsible for locating, loading, validating, and exposing the typed configuration.
+    - At application startup, validate the existence and correctness of model_config.yaml; raise a clear error if invalid, with no fallback to hardcoded models.
+    - The Planner and Executor must refer to logical capabilities (e.g., "llm_query_analysis", "embedding_generate") rather than specific model names; the actual model is resolved at runtime from the configuration.
+    - Tool Registry definitions must not hardcode model names; they must use logical tool names that internally read the configured model.
+    - Task files must reference logical capabilities and the configured model (e.g., MODEL: configured_llm) rather than hardcoded model names.
+    - The Executor must not decide which model to use; it executes the logical tool specified by the Task, which resolves the model from the configuration.
+    - Changing the model in model_config.yaml must affect the next execution without requiring Python source modification (restart acceptable).
+    - The model configuration file should be version-controlled; secrets must remain in .env (not committed).
+    - Provide a .env.example for environment variables.
+    - Perform a configuration test to verify externalized model selection works.
+
+**Relevant files**
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 16 RAG Arch\req.txt` — practical requirements and Top-3 acceptance criterion.
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 16 RAG Arch\gpt.txt` — expanded architecture, GPT-5.6 Luna role, persistence, deduplication, security, and evaluation.
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 16 RAG Arch\Plan\RUNTIME_EXECUTOR_PLAN_SPECIFICATION.txt` — target static specification to be created by the executor.
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 15 RAG\src\config.py` — configuration and environment-loading pattern.
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 15 RAG\src\ingestion\parser.py` and `chunker.py` — parser/provenance and deterministic chunking patterns.
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 15 RAG\src\retrieval\embeddings.py` — embedding-service pattern.
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 15 RAG\src\retrieval\vector_store.py` — persistent ChromaDB, metadata, query, and score conversion pattern.
+- `c:\Users\user\Documents\AiTraining\Tasks\Task 15 RAG\src\retrieval\retriever.py` — relevance-threshold filtering pattern.
+
+**Verification**
+1. Confirm the static specification exists under `Tasks/Task 16 RAG Arch/Plan/` and contains the tool registry, task schema, dynamic dependency rules, state model, recovery rules, security rules, and acceptance criteria.
+2. Dry-run the Planner with `App keeps logging me out`; verify a unique Query folder is created and every generated task names its tool, dependency, expected artifact, and validation check.
+3. Dry-run a second Query; verify a separate folder is created and no first-run artifact is overwritten.
+4. Exercise missing API-key and unavailable-ChromaDB fixtures; verify FAILED/BLOCKED state and bounded recovery instructions.
+5. Execute the semantic-search acceptance test; verify the expected ticket is within Top 3, required metadata and score semantics are present, and final state is COMPLETED.
+6. Confirm secret scanning or inspection finds no API key in generated task files, logs, result files, source, or tracked documentation.
+
+**Decisions**
+- The deliverable is a static runtime specification; Query folders and task files are created only when the Planner receives a real Query.
+- The default path uses GPT-5.6 Luna for Query normalization, a separate compatible embedding model, persistent ChromaDB, internal over-retrieval when needed, ticket-level deduplication, and final top 3-4 results.
+- Tool names are logical contracts; the executor binds them to actual available services at runtime.
+- Task 16 currently has no implementation or tests; only `gpt.txt`, `req.txt`, and an empty `Plan/` directory were found.
+- GPT normalization of historical tickets is optional and selected only after corpus inspection shows it is useful.
+- Scope includes runtime planning, dynamic task generation, tool mapping, execution state, artifact isolation, retrieval, formatting, recovery, and evaluation; it excludes implementation of the Planner/Executor and pre-creating runtime Query folders.

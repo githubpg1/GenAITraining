@@ -1,0 +1,20 @@
+Ticket ID: INC1093
+
+Issue:
+Application crashes when opening a specific file.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Reset the print spooler service.
+
+Status:
+In Progress

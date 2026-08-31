@@ -1,0 +1,14 @@
+Ticket ID: INC1059
+
+Issue:
+Unable to send emails after password change.
+
+Conversation:
+This is a detailed message from the customer about the issue. It includes multiple sentences and some technical details. We need to consider various factors such as environment, configuration, and logs.
+Agent: Brief update on the situation.
+
+Resolution:
+Cleared app cache and forced a fresh sync.
+
+Status:
+Open

@@ -1,0 +1,17 @@
+Ticket ID: INC1007
+
+Issue:
+User cannot stay logged into application.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Increased database connection pool size.
+
+Status:
+Resolved

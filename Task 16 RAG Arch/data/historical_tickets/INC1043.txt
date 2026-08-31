@@ -1,0 +1,19 @@
+Ticket ID: INC1043
+
+Issue:
+Error 404 when accessing internal portal.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Corrected the URL rewrite rule in IIS.
+
+Status:
+Closed

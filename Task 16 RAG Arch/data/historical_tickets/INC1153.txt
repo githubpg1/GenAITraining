@@ -1,0 +1,14 @@
+Ticket ID: INC1153
+
+Issue:
+VPN connection drops intermittently.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Reset the print spooler service.
+
+Status:
+Resolved

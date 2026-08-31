@@ -1,0 +1,41 @@
+TASK_ID: 1
+TASK_NAME: Initialize_Query_Folder
+
+OBJECTIVE:
+Create and validate the unique Query folder.
+
+INPUT:
+Query: App keeps logging me out.
+
+PRIMARY_TOOL:
+query_folder_manager
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Validate folder exists and is writable.
+
+EXPECTED_OUTPUT:
+Folder path confirmed.
+
+ARTIFACT_LOCATION:
+N/A
+
+VALIDATION:
+Folder exists and is accessible.
+
+FAILURE_CONDITION:
+Folder creation failed or not accessible.
+
+RECOVERY/NEXT_ACTION:
+Abort and signal failure.
+
+TASK_DEPENDENCIES:
+None
+
+TOOL_DEPENDENCIES:
+None
+
+STATE:
+PENDING

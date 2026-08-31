@@ -1,0 +1,41 @@
+TASK_ID: 4
+TASK_NAME: Analyze_Query
+
+OBJECTIVE:
+Extract issue, symptoms, entities from the customer query.
+
+INPUT:
+Raw query string
+
+PRIMARY_TOOL:
+ticket_query_analyzer
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Parse query into structured analysis.
+
+EXPECTED_OUTPUT:
+Query analysis JSON.
+
+ARTIFACT_LOCATION:
+query_analysis.json
+
+VALIDATION:
+Contains issue and symptoms fields.
+
+FAILURE_CONDITION:
+Unable to extract meaningful components.
+
+RECOVERY/NEXT_ACTION:
+Use raw query as fallback.
+
+TASK_DEPENDENCIES:
+Task_03_Validate_Corpus
+
+TOOL_DEPENDENCIES:
+ticket_query_analyzer
+
+STATE:
+PENDING

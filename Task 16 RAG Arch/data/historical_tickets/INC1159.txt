@@ -1,0 +1,16 @@
+Ticket ID: INC1159
+
+Issue:
+Software license validation fails after reboot.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Updated SMTP credentials in the email client.
+
+Status:
+Resolved

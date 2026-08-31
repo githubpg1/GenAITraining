@@ -1,0 +1,17 @@
+Ticket ID: INC1088
+
+Issue:
+Application crashes when opening a specific file.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Corrected the URL rewrite rule in IIS.
+
+Status:
+In Progress

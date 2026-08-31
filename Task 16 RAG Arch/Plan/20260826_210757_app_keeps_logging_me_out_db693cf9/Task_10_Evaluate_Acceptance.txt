@@ -1,0 +1,41 @@
+TASK_ID: 10
+TASK_NAME: Evaluate_Acceptance
+
+OBJECTIVE:
+Check if the mandatory paraphrase test passes (Recall@3).
+
+INPUT:
+Final results and known expected ticket ID (if available).
+
+PRIMARY_TOOL:
+acceptance_evaluator
+
+TOOL_VERSION:
+latest  # resolved from tools.json at runtime
+
+ACTION:
+Determine if expected historical ticket is within Top 3.
+
+EXPECTED_OUTPUT:
+PASS/FAIL with details.
+
+ARTIFACT_LOCATION:
+acceptance_result.json
+
+VALIDATION:
+Boolean pass flag present.
+
+FAILURE_CONDITION:
+Evaluation error.
+
+RECOVERY/NEXT_ACTION:
+Mark query as failed if acceptance is required and fails.
+
+TASK_DEPENDENCIES:
+Task_09_Format_Final_Results
+
+TOOL_DEPENDENCIES:
+acceptance_evaluator
+
+STATE:
+PENDING

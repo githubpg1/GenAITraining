@@ -1,0 +1,21 @@
+# Model configuration for the Ticket Intelligence System
+# Models are externally configurable and should not be hardcoded in source code
+
+planner:
+  provider: openai
+  model: gpt-4-turbo-preview  # Strongest configured reasoning model
+  temperature: 0
+
+executor:
+  provider: openai
+  model: gpt-3.5-turbo  # Smaller/cheaper configured model
+  temperature: 0
+
+jiraops:
+  provider: openai
+  model: gpt-3.5-turbo  # Lightweight configured model
+  temperature: 0
+
+embedding:
+  provider: openai
+  model: text-embedding-3-small  # Configured embedding model

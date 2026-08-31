@@ -1,0 +1,11 @@
+# Requirements for Task 16 RAG Arch
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+openai>=1.0.0
+python-dotenv>=1.0.0
+PyYAML>=6.0
+# Optional: for API endpoint
+# fastapi>=0.100.0
+# uvicorn>=0.25.0
+# For testing
+# pytest>=8.0.0

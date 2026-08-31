@@ -1,0 +1,14 @@
+Ticket ID: INC1042
+
+Issue:
+VPN connection drops intermittently.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Corrected the URL rewrite rule in IIS.
+
+Status:
+Open

@@ -1,0 +1,21 @@
+Ticket ID: INC1124
+
+Issue:
+Unexpected shutdown during data export.
+
+Conversation:
+This is a detailed message from the customer about the issue. It includes multiple sentences and some technical details. We need to consider various factors such as environment, configuration, and logs.
+This is a detailed message from the agent about the issue. It includes multiple sentences and some technical details. We need to consider various factors such as environment, configuration, and logs.
+Agent: Additional troubleshooting steps performed.
+Customer: Provided more logs and screenshots.
+Agent: Analyzed the logs and found a root cause in the configuration.
+Customer: Confirmed the issue occurs on multiple machines.
+Agent: Developed a fix and tested in a staging environment.
+Customer: Verified the fix resolves the problem.
+Agent: Prepared rollout plan for production.
+
+Resolution:
+Corrected the URL rewrite rule in IIS.
+
+Status:
+In Progress

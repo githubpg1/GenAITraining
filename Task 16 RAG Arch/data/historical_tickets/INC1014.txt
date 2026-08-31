@@ -1,0 +1,18 @@
+Ticket ID: INC1014
+
+Issue:
+Application crashes when opening a specific file.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Cleared app cache and forced a fresh sync.
+
+Status:
+Closed

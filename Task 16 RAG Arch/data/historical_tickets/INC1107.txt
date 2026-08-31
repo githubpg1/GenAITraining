@@ -1,0 +1,18 @@
+Ticket ID: INC1107
+
+Issue:
+Error 404 when accessing internal portal.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Reconfigured VPN client with new gateway settings.
+
+Status:
+In Progress

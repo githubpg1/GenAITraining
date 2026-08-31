@@ -1,0 +1,16 @@
+Ticket ID: INC1029
+
+Issue:
+Software license validation fails after reboot.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Renewed the license key and reactivated.
+
+Status:
+Closed

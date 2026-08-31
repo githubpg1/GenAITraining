@@ -1,0 +1,18 @@
+Ticket ID: INC1087
+
+Issue:
+Print job fails with error code 0x80004005.
+
+Conversation:
+This is a detailed message from the customer about the issue. It includes multiple sentences and some technical details. We need to consider various factors such as environment, configuration, and logs.
+Agent: Brief update on the situation.
+This is a detailed message from the customer about the issue. It includes multiple sentences and some technical details. We need to consider various factors such as environment, configuration, and logs.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Cleared app cache and forced a fresh sync.
+
+Status:
+Closed

@@ -1,0 +1,15 @@
+Ticket ID: INC1039
+
+Issue:
+Print job fails with error code 0x80004005.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Applied Windows update and checked hardware.
+
+Status:
+Resolved

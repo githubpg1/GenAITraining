@@ -1,0 +1,15 @@
+Ticket ID: INC1009
+
+Issue:
+VPN connection drops intermittently.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+
+Resolution:
+Reinstalled the latest patch from vendor.
+
+Status:
+Closed

@@ -1,0 +1,20 @@
+Ticket ID: INC1063
+
+Issue:
+User cannot stay logged into application.
+
+Conversation:
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+Customer: Brief update on the situation.
+Agent: Brief update on the situation.
+
+Resolution:
+Reinstalled the latest patch from vendor.
+
+Status:
+Closed

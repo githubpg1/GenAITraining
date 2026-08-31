@@ -1,0 +1,34 @@
+# Settings configuration for the Ticket Intelligence System
+
+chroma_db_path: ./chroma_db  # Path to ChromaDB storage
+ticket_chunks_collection: problem18_ticket_chunks
+short_term_memory_collection: problem18_short_term_memory
+working_memory_collection: problem18_working_memory
+long_term_memory_collection: problem18_long_term_memory
+top_k: 5  # Number of results to retrieve from ChromaDB
+similarity_threshold: 0.7  # Similarity threshold for semantic search
+confidence_threshold: 0.8  # Confidence threshold for actionable findings
+max_retries: 3  # Maximum number of retries for recoverable failures
+retry_backoff: 1  # Backoff factor for retries (in seconds)
+jira_project_key: SUP  # Jira project key for tickets
+jira_runtime_task_issue_type: Task  # Issue type for runtime tasks in Jira
+jira_business_issue_type: Bug  # Issue type for business issues in Jira
+labels:  # Default labels for Jira issues
+  - problem18
+  - runtime-task
+memory_settings:  # Additional memory settings
+  short_term_ttl: 3600  # Time to live for short-term memory in seconds (1 hour)
+  working_memory_ttl: 300  # Time to live for working memory in seconds (5 minutes)
+runtime_plan_directory: ./Plan  # Directory to store runtime plan artifacts
+jira_status_mapping:  # Mapping of internal status to Jira status
+  PENDING: To Do
+  IN_PROGRESS: In Progress
+  COMPLETED: Done
+  FAILED: Failed
+  BLOCKED: Blocked
+  SKIPPED: Done
+action_gate_configuration:  # Configuration for the action gate
+  require_evidence: true
+  require_confidence: true
+  require_ltm_check: true
+  require_jira_duplicate_check: true

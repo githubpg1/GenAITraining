@@ -1,0 +1,155 @@
+{
+  "tools": {
+    "query_folder_manager": {
+      "tool_id": "query_folder_manager",
+      "name": "Query Folder Manager",
+      "purpose": "Capability for query_folder_manager",
+      "implementation": "tools.query_folder_manager",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "task_file_writer": {
+      "tool_id": "task_file_writer",
+      "name": "Task File Writer",
+      "purpose": "Capability for task_file_writer",
+      "implementation": "tools.task_file_writer",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "runtime_state_store": {
+      "tool_id": "runtime_state_store",
+      "name": "Runtime State Store",
+      "purpose": "Capability for runtime_state_store",
+      "implementation": "tools.runtime_state_store",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "execution_log_writer": {
+      "tool_id": "execution_log_writer",
+      "name": "Execution Log Writer",
+      "purpose": "Capability for execution_log_writer",
+      "implementation": "tools.execution_log_writer",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "environment_config_loader": {
+      "tool_id": "environment_config_loader",
+      "name": "Environment Config Loader",
+      "purpose": "Capability for environment_config_loader",
+      "implementation": "tools.environment_config_loader",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "secret_validator": {
+      "tool_id": "secret_validator",
+      "name": "Secret Validator",
+      "purpose": "Capability for secret_validator",
+      "implementation": "tools.secret_validator",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "corpus_inspector": {
+      "tool_id": "corpus_inspector",
+      "name": "Corpus Inspector",
+      "purpose": "Capability for corpus_inspector",
+      "implementation": "tools.corpus_inspector",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "metadata_validator": {
+      "tool_id": "metadata_validator",
+      "name": "Metadata Validator",
+      "purpose": "Capability for metadata_validator",
+      "implementation": "tools.metadata_validator",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "ticket_query_analyzer": {
+      "tool_id": "ticket_query_analyzer",
+      "name": "Ticket Query Analyzer",
+      "purpose": "Capability for ticket_query_analyzer",
+      "implementation": "tools.ticket_query_analyzer",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "gpt_query_normalizer": {
+      "tool_id": "gpt_query_normalizer",
+      "name": "Gpt Query Normalizer",
+      "purpose": "Capability for gpt_query_normalizer",
+      "implementation": "tools.gpt_query_normalizer",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "embedding_service": {
+      "tool_id": "embedding_service",
+      "name": "Embedding Service",
+      "purpose": "Capability for embedding_service",
+      "implementation": "tools.embedding_service",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "chroma_vector_store": {
+      "tool_id": "chroma_vector_store",
+      "name": "Chroma Vector Store",
+      "purpose": "Capability for chroma_vector_store",
+      "implementation": "tools.chroma_vector_store",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "candidate_result_processor": {
+      "tool_id": "candidate_result_processor",
+      "name": "Candidate Result Processor",
+      "purpose": "Capability for candidate_result_processor",
+      "implementation": "tools.candidate_result_processor",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "search_result_formatter": {
+      "tool_id": "search_result_formatter",
+      "name": "Search Result Formatter",
+      "purpose": "Capability for search_result_formatter",
+      "implementation": "tools.search_result_formatter",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    },
+    "acceptance_evaluator": {
+      "tool_id": "acceptance_evaluator",
+      "name": "Acceptance Evaluator",
+      "purpose": "Capability for acceptance_evaluator",
+      "implementation": "tools.acceptance_evaluator",
+      "config_ref": "model_config.yaml",
+      "dependencies": [],
+      "version": "1.0.0",
+      "status": "ready"
+    }
+  },
+  "version": "1.0"
+}
